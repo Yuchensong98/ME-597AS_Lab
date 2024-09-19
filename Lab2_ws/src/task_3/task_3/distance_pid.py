@@ -9,8 +9,8 @@ import numpy as np
 class PIDController(Node):
     def __init__(self):
         super().__init__('pid_controller')
-        self.create_subscription(LaserScan, '/scan', self.scan_callback, 10)
-        self.cmd_vel_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.create_subscription(LaserScan, '/robot/scan', self.scan_callback, 10)
+        self.cmd_vel_publisher = self.create_publisher(Twist, '/robot/cmd_vel', 10)
 
         self.declare_parameter('kp', 0.2)
         self.declare_parameter('ki', 0.00001)
