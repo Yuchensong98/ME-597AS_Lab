@@ -1,0 +1,4 @@
+# Ignore install, build, and log directories in any subfolder
+**/install/
+**/build/
+**/log/
