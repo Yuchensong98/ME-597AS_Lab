@@ -1,0 +1,71 @@
+#launch file by chatGPT:
+
+import os
+from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription, ExecuteProcess
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_ros.actions import Node
+from ament_index_python.packages import get_package_share_directory
+
+def generate_launch_description():
+    # Path to the turtlebot4_navigation package
+    navigation_pkg_path = get_package_share_directory('turtlebot4_navigation')
+    # Path to the turtlebot4_viz package
+    viz_pkg_path = get_package_share_directory('turtlebot4_viz')
+
+    # Include the SLAM launch file from turtlebot4_navigation
+    slam_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(navigation_pkg_path, 'launch', 'slam.launch.py'))
+    )
+
+    # Include the view_robot launch file from turtlebot4_viz to view the map in Rviz2
+    rviz_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(viz_pkg_path, 'launch', 'view_robot.launch.py'))
+    )
+
+    # Launch the teleop_twist_keyboard node to teleoperate the TurtleBot4
+    teleop_node = Node(
+        package='teleop_twist_keyboard',
+        executable='teleop_twist_keyboard',
+        name='teleop_twist_keyboard',
+        output='screen',
+        prefix='xterm -e'  # Optional: opens it in a separate terminal window
+    )
+
+    return LaunchDescription([
+        slam_launch,
+        rviz_launch,
+        teleop_node
+    ])
+
+
+#package.xml
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>task_7</name>
+  <version>0.0.0</version>
+  <description>TODO: Package description</description>
+  <maintainer email="me597@todo.todo">me597</maintainer>
+  <license>Apache-2.0</license>
+  <depend>rclpy</depend>
+  <depend>turtlebot4_navigation</depend>
+  <depend>turtlebot4_viz</depend>
+  <depend>teleop_twist_keyboard</depend>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
