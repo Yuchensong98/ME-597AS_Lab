@@ -29,14 +29,14 @@ class Navigation(Node):
         self.ttbot_pose = PoseStamped()
         self.laser_data = None
         # Subscribers
-        self.create_subscription(PoseStamped, '/robot/move_base_simple/goal', self.__goal_pose_cbk, 10)
-        self.create_subscription(PoseWithCovarianceStamped, '/robot/amcl_pose', self.__ttbot_pose_cbk, 10)
-        self.create_subscription(OccupancyGrid, '/robot/map', self.__map_cbk, 10)
-        self.create_subscription(LaserScan, '/robot/scan', self.__laser_scan_cbk, 10)
+        self.create_subscription(PoseStamped, '/move_base_simple/goal', self.__goal_pose_cbk, 10)
+        self.create_subscription(PoseWithCovarianceStamped, '/amcl_pose', self.__ttbot_pose_cbk, 10)
+        self.create_subscription(OccupancyGrid, '/map', self.__map_cbk, 10)
+        self.create_subscription(LaserScan, '/scan', self.__laser_scan_cbk, 10)
 
         # Publishers
         self.path_pub = self.create_publisher(Path, 'global_plan', 10)
-        self.cmd_vel_pub = self.create_publisher(Twist, '/robot/cmd_vel', 10)
+        self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
         self.look_ahead_index_pub = self.create_publisher(Float32, 'look_ahead_index', 10)
         self.look_ahead_error_pub = self.create_publisher(Float32, 'look_ahead_error', 10)
         self.local_path_pub = self.create_publisher(Path, 'local_plan', 10)
